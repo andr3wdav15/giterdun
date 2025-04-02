@@ -1,0 +1,22 @@
+<!-- todo list component -->
+<div class="todo-list-container">
+  
+  <!-- actions -->
+  <div class="actions">
+    <button (click)="navigateToAddTodo()" class="add-btn">Add New Todo</button>
+  </div>
+  
+  <!-- todos -->
+  <div class="todos-container">
+    <!-- if no todos, show empty message -->
+    @if (todos.length === 0) {
+      <p class="empty-message">No todos found. Add some!</p>
+    } @else {
+      <!-- else, show todos using for each loop-->
+      @for (todo of todos; track todo.id) {
+        <!-- todo item -->
+        <app-todo-item [todo]="todo"></app-todo-item>
+      }
+    }
+  </div>
+</div>
