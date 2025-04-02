@@ -1,28 +1,27 @@
 <!-- add todo component -->
 <div class="add-todo-container">
-  
   <!-- add todo form -->
   <form (submit)="addTodo()">
     <div class="form-group">
       <label for="todoTitle">Todo Title</label>
-      <input 
-        type="text" 
-        id="todoTitle" 
-        name="todoTitle" 
-        [(ngModel)]="newTodoTitle" 
+      <input
+        type="text"
+        id="todoTitle"
+        name="todoTitle"
+        [(ngModel)]="newTodoTitle"
         placeholder="Enter todo title"
         required
         autofocus
-      >
+      />
     </div>
 
     <!-- todo description -->
     <div class="form-group">
       <label for="todoDescription">Description</label>
-      <textarea 
-        id="todoDescription" 
-        name="todoDescription" 
-        [(ngModel)]="newTodoDescription" 
+      <textarea
+        id="todoDescription"
+        name="todoDescription"
+        [(ngModel)]="newTodoDescription"
         placeholder="Enter todo description"
         rows="4"
       ></textarea>
@@ -30,8 +29,16 @@
 
     <!-- form actions -->
     <div class="form-actions">
-      <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-      <button type="submit" class="submit-btn" [disabled]="!newTodoTitle.trim()">Add Todo</button>
+      <button type="button" class="cancel-btn" (click)="cancel()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="!newTodoTitle.trim()"
+      >
+        Add Todo
+      </button>
     </div>
   </form>
 </div>

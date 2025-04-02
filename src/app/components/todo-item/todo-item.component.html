@@ -2,12 +2,16 @@
 <div class="todo-item" [class.completed]="todo.completed">
   <div class="todo-content">
     <label class="checkbox-container">
-      <input type="checkbox" [checked]="todo.completed" (change)="toggleComplete()">
+      <input
+        type="checkbox"
+        [checked]="todo.completed"
+        (change)="toggleComplete()"
+      />
       <span class="checkmark"></span>
     </label>
     <span class="todo-title">{{ todo.title }}</span>
   </div>
-  
+
   <!-- todo actions -->
   <div class="todo-actions">
     <button class="info-btn" (click)="openInfoModal()">Info</button>

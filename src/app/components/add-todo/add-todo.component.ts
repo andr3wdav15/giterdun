@@ -9,13 +9,16 @@ import { TodoService } from '../../services/todo.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './add-todo.component.html',
-  styleUrl: './add-todo.component.scss'
+  styleUrl: './add-todo.component.scss',
 })
 export class AddTodoComponent {
   newTodoTitle: string = '';
   newTodoDescription: string = '';
 
-  constructor(private todoService: TodoService, private router: Router) {}
+  constructor(
+    private todoService: TodoService,
+    private router: Router,
+  ) {}
 
   addTodo(): void {
     if (this.newTodoTitle.trim()) {

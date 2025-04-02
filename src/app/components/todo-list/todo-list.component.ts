@@ -10,19 +10,22 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
   standalone: true,
   imports: [CommonModule, RouterModule, TodoItemComponent],
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss']
+  styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
 
-  constructor(private todoService: TodoService, private router: Router) {}
+  constructor(
+    private todoService: TodoService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
-    this.todoService.getTodos().subscribe(todos => {
+    this.todoService.getTodos().subscribe((todos) => {
       this.todos = todos;
     });
   }
-  
+
   navigateToAddTodo(): void {
     this.router.navigate(['/add']);
   }

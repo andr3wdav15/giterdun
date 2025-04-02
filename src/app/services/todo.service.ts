@@ -4,7 +4,7 @@ import { Todo } from '../models/todo.model';
 
 // todo service
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
   private todos: Todo[] = [];
@@ -12,7 +12,7 @@ export class TodoService {
   private readonly STORAGE_KEY = 'todos';
 
   // constructor
-  constructor() { 
+  constructor() {
     this.loadTodos();
   }
 
@@ -31,7 +31,6 @@ export class TodoService {
     this.todosSubject.next([...this.todos]);
   }
 
-
   // get all todos as an observable collection
   getTodos(): Observable<Todo[]> {
     return this.todosSubject.asObservable();
@@ -43,16 +42,16 @@ export class TodoService {
       id: Date.now(),
       title: title.trim(),
       description: description.trim(),
-      completed: false
+      completed: false,
     };
-    
+
     this.todos.push(newTodo);
     this.saveTodos();
   }
 
   // toggle the completion state of a todo
   toggleComplete(id: number): void {
-    const todoIndex = this.todos.findIndex(todo => todo.id === id);
+    const todoIndex = this.todos.findIndex((todo) => todo.id === id);
     if (todoIndex !== -1) {
       this.todos[todoIndex].completed = !this.todos[todoIndex].completed;
       this.saveTodos();
@@ -61,13 +60,13 @@ export class TodoService {
 
   // delete a todo
   deleteTodo(id: number): void {
-    this.todos = this.todos.filter(todo => todo.id !== id);
+    this.todos = this.todos.filter((todo) => todo.id !== id);
     this.saveTodos();
   }
 
   // edit a todo's title and description
   editTodo(id: number, newTitle: string, newDescription: string = ''): void {
-    const todoIndex = this.todos.findIndex(todo => todo.id === id);
+    const todoIndex = this.todos.findIndex((todo) => todo.id === id);
     if (todoIndex !== -1) {
       this.todos[todoIndex].title = newTitle.trim();
       this.todos[todoIndex].description = newDescription.trim();
@@ -77,6 +76,6 @@ export class TodoService {
 
   // get a specific todo by id
   getTodoById(id: number): Todo | undefined {
-    return this.todos.find(todo => todo.id === id);
+    return this.todos.find((todo) => todo.id === id);
   }
 }

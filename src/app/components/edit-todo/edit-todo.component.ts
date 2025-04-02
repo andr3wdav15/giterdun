@@ -10,7 +10,7 @@ import { Todo } from '../../models/todo.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-todo.component.html',
-  styleUrl: './edit-todo.component.scss'
+  styleUrl: './edit-todo.component.scss',
 })
 export class EditTodoComponent implements OnInit {
   todoId!: number;
@@ -21,7 +21,7 @@ export class EditTodoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private todoService: TodoService
+    private todoService: TodoService,
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class EditTodoComponent implements OnInit {
     if (id) {
       this.todoId = +id;
       this.todo = this.todoService.getTodoById(this.todoId);
-      
+
       if (this.todo) {
         this.todoTitle = this.todo.title;
         this.todoDescription = this.todo.description || '';
@@ -43,7 +43,11 @@ export class EditTodoComponent implements OnInit {
   updateTodo(): void {
     if (this.todoTitle.trim() && this.todoId) {
       // Update the todo with new title and description
-      this.todoService.editTodo(this.todoId, this.todoTitle, this.todoDescription);
+      this.todoService.editTodo(
+        this.todoId,
+        this.todoTitle,
+        this.todoDescription,
+      );
       this.router.navigate(['/']);
     }
   }
