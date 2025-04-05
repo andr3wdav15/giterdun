@@ -16,6 +16,7 @@ export class EditTodoComponent implements OnInit {
   todoId!: number;
   todoTitle: string = '';
   todoDescription: string = '';
+  todoGoalDate?: string;
   todo: Todo | undefined;
 
   constructor(
@@ -33,8 +34,10 @@ export class EditTodoComponent implements OnInit {
       if (this.todo) {
         this.todoTitle = this.todo.title;
         this.todoDescription = this.todo.description || '';
+        this.todoGoalDate = this.todo.goalDate
+          ? this.formatDateForInput(this.todo.goalDate)
+          : undefined;
       } else {
-        // Redirect if todo not found
         this.router.navigate(['/']);
       }
     }
@@ -42,14 +45,29 @@ export class EditTodoComponent implements OnInit {
 
   updateTodo(): void {
     if (this.todoTitle.trim() && this.todoId) {
-      // Update the todo with new title and description
+      const goalDate = this.todoGoalDate
+        ? new Date(this.todoGoalDate)
+        : undefined;
       this.todoService.editTodo(
         this.todoId,
         this.todoTitle,
         this.todoDescription,
+        goalDate,
       );
       this.router.navigate(['/']);
     }
+  }
+
+  private formatDateForInput(date: Date): string {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
   cancel(): void {

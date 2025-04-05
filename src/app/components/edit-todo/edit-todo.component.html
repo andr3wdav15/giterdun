@@ -1,40 +1,54 @@
-<!-- edit todo component -->
-<div class="edit-todo-container">
-  <!-- edit todo form -->
-  <form (submit)="updateTodo()" *ngIf="todo">
-    <div class="form-group">
-      <label for="todoTitle">Todo Title</label>
+<div class="d-flex flex-column justify-content-center" style="min-height: 75vh">
+  <form (ngSubmit)="updateTodo()" *ngIf="todo">
+    <div class="mb-3">
+      <label for="todoTitle" class="form-label">Task</label>
       <input
         type="text"
+        class="form-control"
         id="todoTitle"
         name="todoTitle"
         [(ngModel)]="todoTitle"
-        placeholder="Enter todo title"
+        placeholder="Enter your task to complete..."
         required
         autofocus
       />
     </div>
 
-    <!-- todo description -->
-    <div class="form-group">
-      <label for="todoDescription">Description</label>
+    <div class="mb-3">
+      <label for="todoGoalDate" class="form-label">Goal Date</label>
+      <input
+        type="date"
+        class="form-control"
+        id="todoGoalDate"
+        [(ngModel)]="todoGoalDate"
+        name="todoGoalDate"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="todoDescription" class="form-label">Description</label>
       <textarea
+        class="form-control"
         id="todoDescription"
         name="todoDescription"
         [(ngModel)]="todoDescription"
-        placeholder="Enter todo description"
+        placeholder="Any additional information or reminders about your tasks..."
         rows="4"
       ></textarea>
     </div>
 
-    <!-- form actions -->
-    <div class="form-actions">
-      <button type="button" class="cancel-btn" (click)="cancel()">
-        Cancel
+    <div class="d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-primary me-2"
+        [disabled]="!todoTitle.trim()"
+      >
+        Update
       </button>
-      <button type="submit" class="submit-btn" [disabled]="!todoTitle.trim()">
-        Update Todo
+      <button type="button" class="btn btn-secondary" (click)="cancel()">
+        Cancel
       </button>
     </div>
   </form>
+  <p class="alert alert-warning" *ngIf="!todo">Todo not found.</p>
 </div>

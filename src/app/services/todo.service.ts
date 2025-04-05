@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Todo } from '../models/todo.model';
 
-// todo service
 @Injectable({
   providedIn: 'root',
 })
@@ -11,71 +10,94 @@ export class TodoService {
   private todosSubject = new BehaviorSubject<Todo[]>([]);
   private readonly STORAGE_KEY = 'todos';
 
-  // constructor
   constructor() {
     this.loadTodos();
   }
 
-  // load todos from localStorage
   private loadTodos(): void {
     const storedTodos = localStorage.getItem(this.STORAGE_KEY);
     if (storedTodos) {
       this.todos = JSON.parse(storedTodos);
-      this.todosSubject.next([...this.todos]);
+      this.todos.forEach((todo) => (todo.isSelected = !!todo.isSelected));
+    } else {
+      this.todos = [];
     }
+    this.todosSubject.next([...this.todos]);
   }
 
-  // save todos to localStorage
   private saveTodos(): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.todos));
     this.todosSubject.next([...this.todos]);
   }
 
-  // get all todos as an observable collection
   getTodos(): Observable<Todo[]> {
     return this.todosSubject.asObservable();
   }
 
-  // add a new todo
-  addTodo(title: string, description: string = ''): void {
+  addTodo(title: string, description: string = '', goalDate?: Date): void {
+    const newId =
+      this.todos.length > 0 ? Math.max(...this.todos.map((t) => t.id)) + 1 : 1;
+
     const newTodo: Todo = {
-      id: Date.now(),
+      id: newId,
       title: title.trim(),
       description: description.trim(),
-      completed: false,
+      goalDate: goalDate,
+      isSelected: false,
     };
 
     this.todos.push(newTodo);
     this.saveTodos();
   }
 
-  // toggle the completion state of a todo
-  toggleComplete(id: number): void {
-    const todoIndex = this.todos.findIndex((todo) => todo.id === id);
-    if (todoIndex !== -1) {
-      this.todos[todoIndex].completed = !this.todos[todoIndex].completed;
-      this.saveTodos();
-    }
-  }
-
-  // delete a todo
   deleteTodo(id: number): void {
     this.todos = this.todos.filter((todo) => todo.id !== id);
     this.saveTodos();
   }
 
-  // edit a todo's title and description
-  editTodo(id: number, newTitle: string, newDescription: string = ''): void {
-    const todoIndex = this.todos.findIndex((todo) => todo.id === id);
-    if (todoIndex !== -1) {
-      this.todos[todoIndex].title = newTitle.trim();
-      this.todos[todoIndex].description = newDescription.trim();
+  deleteSelectedTodos(): void {
+    const initialLength = this.todos.length;
+    this.todos = this.todos.filter((todo) => !todo.isSelected);
+    if (this.todos.length < initialLength) {
       this.saveTodos();
     }
   }
 
-  // get a specific todo by id
+  editTodo(
+    id: number,
+    newTitle: string,
+    newDescription: string = '',
+    newGoalDate?: Date,
+  ): void {
+    const todo = this.getTodoById(id);
+
+    if (todo) {
+      todo.title = newTitle.trim();
+      todo.description = newDescription.trim();
+      todo.goalDate = newGoalDate;
+      this.saveTodos();
+    }
+  }
+
   getTodoById(id: number): Todo | undefined {
     return this.todos.find((todo) => todo.id === id);
+  }
+
+  toggleSelection(todoToToggle: Todo): void {
+    const todoIndex = this.todos.findIndex(
+      (todo) => todo.id === todoToToggle.id,
+    );
+    if (todoIndex !== -1) {
+      this.todos[todoIndex].isSelected = !this.todos[todoIndex].isSelected;
+      this.saveTodos();
+    }
+  }
+
+  hasSelectedTodos(): boolean {
+    return this.todos.some((todo) => todo.isSelected);
+  }
+
+  getSelectedCount(): number {
+    return this.todos.filter((todo) => todo.isSelected).length;
   }
 }

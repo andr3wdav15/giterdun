@@ -1,35 +1,45 @@
-<!-- todo item -->
-<div class="todo-item" [class.completed]="todo.completed">
-  <div class="todo-content">
-    <label class="checkbox-container">
-      <input
-        type="checkbox"
-        [checked]="todo.completed"
-        (change)="toggleComplete()"
-      />
-      <span class="checkmark"></span>
-    </label>
-    <span class="todo-title">{{ todo.title }}</span>
+<div
+  class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+  [class.active]="todo.isSelected"
+  (click)="toggleSelection()"
+>
+  <div class="me-3">
+    <span>{{ todo.title }}</span>
   </div>
 
-  <!-- todo actions -->
-  <div class="todo-actions">
-    <button class="info-btn" (click)="openInfoModal()">Info</button>
-    <button class="edit-btn" (click)="editTodo()">Edit</button>
-    <button class="delete-btn" (click)="deleteTodo()">Delete</button>
+  <div class="flex-shrink-0">
+    <button
+      class="btn btn-sm btn-outline-info me-1"
+      (click)="toggleDetails($event)"
+      [attr.aria-label]="isExpanded ? 'Hide info' : 'Show info'"
+      [title]="isExpanded ? 'Hide info' : 'Show info'"
+    >
+      <i
+        [ngClass]="isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+      ></i>
+    </button>
+    <button
+      class="btn btn-sm btn-outline-secondary"
+      (click)="editTodo($event)"
+      aria-label="Edit todo"
+      title="Edit todo"
+    >
+      <i class="fas fa-pencil-alt"></i>
+    </button>
   </div>
 </div>
 
-<!-- info modal -->
-<div class="modal" *ngIf="showInfoModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>{{ todo.title }}</h3>
-      <button class="close-btn" (click)="closeInfoModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p *ngIf="todo.description">{{ todo.description }}</p>
-      <p *ngIf="!todo.description">No description available.</p>
-    </div>
+@if (isExpanded) {
+  <div class="list-group-item bg-light p-3" style="border-top: none">
+    @if (todo.description) {
+      <p class="mb-2">{{ todo.description }}</p>
+    } @else {
+      <p class="mb-2 text-muted"><em>No description provided.</em></p>
+    }
+    @if (todo.goalDate) {
+      <small class="text-muted">{{ todo.goalDate | date: "mediumDate" }}</small>
+    } @else {
+      <small class="text-muted"><em>No goal date set.</em></small>
+    }
   </div>
-</div>
+}

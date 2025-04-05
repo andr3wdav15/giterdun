@@ -1,21 +1,41 @@
-<!-- todo list component -->
-<div class="todo-list-container">
-  <!-- actions -->
-  <div class="actions">
-    <button (click)="navigateToAddTodo()" class="add-btn">Add New Todo</button>
+<div class="container mt-4">
+  <div class="d-flex justify-content-end mb-3">
+    <button
+      *ngIf="todoService.hasSelectedTodos()"
+      (click)="deleteSelected()"
+      class="btn btn-danger"
+      aria-label="Delete Selected Todos"
+      title="Delete Selected Todos"
+    >
+      <span class="position-relative">
+        <i class="fas fa-trash-alt"></i>
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary text-white"
+        >
+          {{ todoService.getSelectedCount() }}
+          <span class="visually-hidden">selected items</span>
+        </span>
+      </span>
+    </button>
+    <button
+      (click)="navigateToAddTodo()"
+      class="btn btn-primary ms-2"
+      aria-label="Add New Todo"
+      title="Add New Todo"
+    >
+      <i class="fas fa-plus"></i>
+    </button>
   </div>
 
-  <!-- todos -->
-  <div class="todos-container">
-    <!-- if no todos, show empty message -->
+  <div>
     @if (todos.length === 0) {
-      <p class="empty-message">No todos found. Add some!</p>
+      <p class="alert alert-info">You have nothing to do?</p>
     } @else {
-      <!-- else, show todos using for each loop-->
-      @for (todo of todos; track todo.id) {
-        <!-- todo item -->
-        <app-todo-item [todo]="todo"></app-todo-item>
-      }
+      <div class="list-group">
+        @for (todo of todos; track todo.id) {
+          <app-todo-item [todo]="todo"></app-todo-item>
+        }
+      </div>
     }
   </div>
 </div>

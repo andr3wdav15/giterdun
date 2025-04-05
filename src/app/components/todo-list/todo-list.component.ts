@@ -16,7 +16,7 @@ export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
 
   constructor(
-    private todoService: TodoService,
+    public todoService: TodoService,
     private router: Router,
   ) {}
 
@@ -28,5 +28,9 @@ export class TodoListComponent implements OnInit {
 
   navigateToAddTodo(): void {
     this.router.navigate(['/add']);
+  }
+
+  deleteSelected(): void {
+    this.todoService.deleteSelectedTodos();
   }
 }

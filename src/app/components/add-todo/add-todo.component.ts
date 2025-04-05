@@ -9,11 +9,12 @@ import { TodoService } from '../../services/todo.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './add-todo.component.html',
-  styleUrl: './add-todo.component.scss',
+  styleUrls: ['./add-todo.component.scss'],
 })
 export class AddTodoComponent {
   newTodoTitle: string = '';
   newTodoDescription: string = '';
+  newTodoGoalDate?: string;
 
   constructor(
     private todoService: TodoService,
@@ -22,9 +23,17 @@ export class AddTodoComponent {
 
   addTodo(): void {
     if (this.newTodoTitle.trim()) {
-      this.todoService.addTodo(this.newTodoTitle, this.newTodoDescription);
+      const goalDate = this.newTodoGoalDate
+        ? new Date(this.newTodoGoalDate)
+        : undefined;
+      this.todoService.addTodo(
+        this.newTodoTitle,
+        this.newTodoDescription,
+        goalDate,
+      );
       this.newTodoTitle = '';
       this.newTodoDescription = '';
+      this.newTodoGoalDate = undefined;
       this.router.navigate(['/']);
     }
   }

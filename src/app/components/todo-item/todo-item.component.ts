@@ -1,42 +1,36 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Todo } from '../../models/todo.model';
 import { TodoService } from '../../services/todo.service';
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss'],
 })
 export class TodoItemComponent {
   @Input() todo!: Todo;
-  showInfoModal = false;
+  isExpanded = false;
 
   constructor(
-    private todoService: TodoService,
+    public todoService: TodoService,
     private router: Router,
   ) {}
 
-  toggleComplete(): void {
-    this.todoService.toggleComplete(this.todo.id);
+  toggleSelection(): void {
+    this.todoService.toggleSelection(this.todo);
   }
 
-  deleteTodo(): void {
-    this.todoService.deleteTodo(this.todo.id);
-  }
-
-  editTodo(): void {
+  editTodo(event: MouseEvent): void {
+    event.stopPropagation();
     this.router.navigate(['/edit', this.todo.id]);
   }
 
-  openInfoModal(): void {
-    this.showInfoModal = true;
-  }
-
-  closeInfoModal(): void {
-    this.showInfoModal = false;
+  toggleDetails(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isExpanded = !this.isExpanded;
   }
 }

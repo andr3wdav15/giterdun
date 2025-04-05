@@ -1,0 +1,21 @@
+@use "bootstrap/scss/functions";
+
+$primary: #7a5dc7;
+$secondary: #868e96;
+$success: #198754;
+$info: #20c997;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #343a40;
+
+@use "bootstrap/scss/bootstrap" with (
+  $primary: $primary,
+  $secondary: $secondary,
+  $success: $success,
+  $info: $info,
+  $warning: $warning,
+  $danger: $danger,
+  $light: $light,
+  $dark: $dark
+);
